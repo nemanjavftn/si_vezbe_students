@@ -62,5 +62,24 @@ namespace DataAccessLayer
                 return result;
             }
         }
+
+        public int UpdateStudent(Student s)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(Constants.connectionString))
+            {
+                sqlConnection.Open();
+
+                SqlCommand sqlCommand = new SqlCommand();
+                sqlCommand.Connection = sqlConnection;
+
+                sqlCommand.CommandText = string.Format(
+                    "UPDATE Students SET Name='{0}',Surname='{1}',Age ={2},IndexNumber='{3}' " +
+                    "WHERE Id={4}", s.Name, s.Surname, s.Age, s.IndexNumber, s.Id);
+
+                int result = sqlCommand.ExecuteNonQuery();
+
+                return result;
+            }
+        }
     }
 }

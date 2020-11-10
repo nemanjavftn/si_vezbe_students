@@ -38,6 +38,7 @@
             this.textBoxStudentAge = new System.Windows.Forms.TextBox();
             this.textBoxStudentIndexNumber = new System.Windows.Forms.TextBox();
             this.buttonInsertStudent = new System.Windows.Forms.Button();
+            this.buttonUpdateStudent = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBoxStudents
@@ -48,6 +49,7 @@
             this.listBoxStudents.Name = "listBoxStudents";
             this.listBoxStudents.Size = new System.Drawing.Size(1011, 319);
             this.listBoxStudents.TabIndex = 0;
+            this.listBoxStudents.SelectedIndexChanged += new System.EventHandler(this.listBoxStudents_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -123,11 +125,22 @@
             this.buttonInsertStudent.UseVisualStyleBackColor = true;
             this.buttonInsertStudent.Click += new System.EventHandler(this.buttonInsertStudent_Click);
             // 
+            // buttonUpdateStudent
+            // 
+            this.buttonUpdateStudent.Location = new System.Drawing.Point(360, 119);
+            this.buttonUpdateStudent.Name = "buttonUpdateStudent";
+            this.buttonUpdateStudent.Size = new System.Drawing.Size(181, 23);
+            this.buttonUpdateStudent.TabIndex = 10;
+            this.buttonUpdateStudent.Text = "Izmeni studenta";
+            this.buttonUpdateStudent.UseVisualStyleBackColor = true;
+            this.buttonUpdateStudent.Click += new System.EventHandler(this.buttonUpdateStudent_Click);
+            // 
             // StudentsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1141, 515);
+            this.Controls.Add(this.buttonUpdateStudent);
             this.Controls.Add(this.buttonInsertStudent);
             this.Controls.Add(this.textBoxStudentIndexNumber);
             this.Controls.Add(this.textBoxStudentAge);
@@ -158,5 +171,6 @@
         private System.Windows.Forms.TextBox textBoxStudentAge;
         private System.Windows.Forms.TextBox textBoxStudentIndexNumber;
         private System.Windows.Forms.Button buttonInsertStudent;
+        private System.Windows.Forms.Button buttonUpdateStudent;
     }
 }

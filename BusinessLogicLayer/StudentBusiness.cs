@@ -39,5 +39,16 @@ namespace BusinessLogicLayer
             // neuspešan unos
             return false;
         }
+
+        public bool UpdateStudent(Student s)
+        {
+            if (this.studentRepository.UpdateStudent(s) > 0)
+            {
+                // uspešna izmena
+                return true;
+            }
+            // neuspešna izmena
+            return false;
+        }
     }
 }

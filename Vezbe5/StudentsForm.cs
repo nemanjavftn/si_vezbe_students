@@ -56,5 +56,34 @@ namespace Vezbe5
                 MessageBox.Show("Unos nije uspešan!");
             }
         }
+
+        private void buttonUpdateStudent_Click(object sender, EventArgs e)
+        {
+            Student s = new Student();
+            s.Name = textBoxStudentName.Text;
+            s.Surname = textBoxStudentSurname.Text;
+            s.Age = Convert.ToInt32(textBoxStudentAge.Text);
+            s.IndexNumber = textBoxStudentIndexNumber.Text;
+
+            // selektovana stavka u listi, id (broj pre tačke)
+            s.Id = int.Parse(listBoxStudents.SelectedItem.ToString().Split(".")[0]);
+
+            bool result = this.studentBusiness.UpdateStudent(s);
+
+            if (result)
+            {
+                FillList();
+                MessageBox.Show("Uspešna izmena!");
+            }
+            else
+            {
+                MessageBox.Show("Izmena nije uspešna!");
+            }
+        }
+
+        private void listBoxStudents_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
