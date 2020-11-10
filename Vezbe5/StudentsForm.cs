@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLogicLayer;
+using DataAccessLayer;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -7,47 +9,51 @@ namespace Vezbe5
 {
     public partial class StudentsForm : Form
     {
-        private string connectionString = "Data Source=(localdb)\\ProjectsV13;Initial Catalog=FacultyDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private readonly StudentBusiness studentBusiness;
 
         public StudentsForm()
         {
+            this.studentBusiness = new StudentBusiness();
             InitializeComponent();
         }
 
         private void StudentsForm_Load(object sender, EventArgs e)
         {
-            // nakaciti se na bazu podataka i prikazati podatke iz tabele Students
-            using (SqlConnection sqlConnection = new SqlConnection())
+            FillList();
+        }
+
+        private void FillList()
+        {
+            listBoxStudents.Items.Clear();
+
+            List<Student> students = this.studentBusiness.GetAllStudents();
+
+            foreach (Student s in students)
             {
-                sqlConnection.ConnectionString = connectionString;
+                listBoxStudents.Items.Add(s.Id + ". " +
+                    s.Name + " " + s.Surname + " - " + s.Age +
+                    " (" + s.IndexNumber + ")");
+            }
+        }
 
-                List<Student> students = new List<Student>();
+        private void buttonInsertStudent_Click(object sender, EventArgs e)
+        {
+            Student s = new Student();
+            s.Name = textBoxStudentName.Text;
+            s.Surname = textBoxStudentSurname.Text;
+            s.Age = Convert.ToInt32(textBoxStudentAge.Text);
+            s.IndexNumber = textBoxStudentIndexNumber.Text;
 
-                sqlConnection.Open();
+            bool result = this.studentBusiness.InsertOneStudent(s);
 
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM Students";
-
-                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-                while (sqlDataReader.Read())
-                {
-                    Student student = new Student();
-                    student.Id = sqlDataReader.GetInt32(0);
-                    student.Name = sqlDataReader.GetString(1);
-                    student.Surname = sqlDataReader.GetString(2);
-                    student.Age = sqlDataReader.GetInt32(3);
-                    student.IndexNumber = sqlDataReader.GetString(4);
-                    students.Add(student);
-                }
-
-                foreach (Student s in students)
-                {
-                    listBoxStudents.Items.Add(s.Id + ". " +
-                        s.Name + " " + s.Surname + " - " + s.Age +
-                        " (" + s.IndexNumber + ")");
-                }
+            if (result)
+            {
+                FillList();
+                MessageBox.Show("Uspešan unos!");
+            } 
+            else
+            {
+                MessageBox.Show("Unos nije uspešan!");
             }
         }
     }
