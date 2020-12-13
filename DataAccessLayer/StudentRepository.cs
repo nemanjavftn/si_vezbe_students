@@ -12,30 +12,21 @@ namespace DataAccessLayer
             List<Student> students = new List<Student>();
 
             // nakaciti se na bazu podataka i prikazati podatke iz tabele Students
-            using (SqlConnection sqlConnection = new SqlConnection())
+
+            SqlDataReader sqlDataReader = DBConnection.GetData("SELECT * FROM Students");
+
+            while (sqlDataReader.Read())
             {
-                sqlConnection.ConnectionString = Constants.connectionString;
-
-                sqlConnection.Open();
-
-                SqlCommand sqlCommand = new SqlCommand();
-                sqlCommand.Connection = sqlConnection;
-                sqlCommand.CommandText = "SELECT * FROM Students";
-
-                SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-
-                while (sqlDataReader.Read())
-                {
-                    Student student = new Student();
-                    student.Id = sqlDataReader.GetInt32(0);
-                    student.Name = sqlDataReader.GetString(1);
-                    student.Surname = sqlDataReader.GetString(2);
-                    student.Age = sqlDataReader.GetInt32(3);
-                    student.IndexNumber = sqlDataReader.GetString(4);
-                    students.Add(student);
-                }
-
+                Student student = new Student();
+                student.Id = sqlDataReader.GetInt32(0);
+                student.Name = sqlDataReader.GetString(1);
+                student.Surname = sqlDataReader.GetString(2);
+                student.Age = sqlDataReader.GetInt32(3);
+                student.IndexNumber = sqlDataReader.GetString(4);
+                students.Add(student);
             }
+
+            DBConnection.CloseConnection();
 
             return students;
         }

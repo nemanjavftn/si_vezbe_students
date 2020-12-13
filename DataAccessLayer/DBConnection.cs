@@ -6,7 +6,6 @@ namespace DataAccessLayer
     {
         private static SqlConnection sqlConnection = null;
         private static SqlCommand sqlCommand = null;
-        private static readonly object padlock = new object();
 
         private static string conStr = Constants.connectionString;
         // "AttachDbFileName=|DataDirectory|\\webshop.mdf;" +
@@ -21,14 +20,11 @@ namespace DataAccessLayer
         {
             get
             {
-                lock (padlock)
-                {
                     if (sqlConnection == null)
                     {
                         sqlConnection = new SqlConnection(conStr);
                     }
                     return sqlConnection;
-                }
             }
         }
 
@@ -36,8 +32,6 @@ namespace DataAccessLayer
         {
             get
             {
-                lock (padlock)
-                {
                     if (sqlCommand == null)
                     {
                         sqlCommand = new SqlCommand
@@ -46,7 +40,6 @@ namespace DataAccessLayer
                         };
                     }
                     return sqlCommand;
-                }
             }
         }
 
@@ -56,7 +49,7 @@ namespace DataAccessLayer
                 sqlConnection.Open();
         }
 
-        private static void CloseConnection()
+        public static void CloseConnection()
         {
             if (sqlConnection != null)
                 sqlConnection.Close();
@@ -69,7 +62,6 @@ namespace DataAccessLayer
                 OpenConnection();
                 sqlCommand.CommandText = commandText;
                 var result = sqlCommand.ExecuteReader();
-                CloseConnection();
                 return result;
             }
             return null;
