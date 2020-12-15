@@ -50,5 +50,12 @@ namespace BusinessLogicLayer
             // neuspešna izmena
             return false;
         }
+
+        public bool CanTakeExam(Student s)
+        {
+            Faculty faculty = new Faculty();
+
+            return faculty.CanTakeExam(s);
+        }
     }
 }
