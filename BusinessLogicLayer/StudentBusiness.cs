@@ -57,5 +57,26 @@ namespace BusinessLogicLayer
 
             return faculty.CanTakeExam(s);
         }
+
+        public List<Student> SortStudents(List<Student> list, string sortType)
+        {
+            StudentSortedList studentSortedList = new StudentSortedList();
+            studentSortedList.List = list;
+
+            switch (sortType)
+            {
+                case "name":
+                    studentSortedList.SetSortStrategy(new ByName());
+                    studentSortedList.Sort();
+                    break;
+                case "index":
+                    studentSortedList.SetSortStrategy(new ByIndexNumber());
+                    studentSortedList.Sort();
+                    break;
+                default:
+                    break;
+            }
+            return studentSortedList.List;
+        }
     }
 }
